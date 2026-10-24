@@ -15,7 +15,7 @@ budget:
   lines_max: 80
   params_max: 1
 tests: tests/test_slug.py
-tests_sha256: '0d11f171d0f610a0d96be736b88bedddc107e6e383c1c5ae3200a8913fc4836e'
+tests_sha256: '868a36072be398d767552e294f18fc73a972b567f0335298b3fb65718c991358'
 touch_only: ['src/slug.py']
 deps_allowed: ['stdlib']
 forbids: ['network', 'subprocess', 'llm']
@@ -34,6 +34,8 @@ Comportamiento y errores definidos en el [nodo de producto](../slug-demo.md).
 - CLI con codigos y canales de salida definidos por el producto.
 - El oraculo y este contrato permanecen iguales al baseline aprobado.
 - El implementador cambia solo src/slug.py; el coordinador registra la tarea.
+- El oraculo decodifica explicitamente UTF-8 en los procesos de prueba y
+  verifica los tres mutantes con el padre forzado a locale CP1252.
 
 ## Examples
 - "Hola Mundo" -> "hola-mundo".
@@ -45,8 +47,9 @@ Comportamiento y errores definidos en el [nodo de producto](../slug-demo.md).
 - DON'T editar el oraculo para hacer pasar la implementacion.
 
 ## Tests
-21 pruebas: nueve funcionales, siete adversariales (tres mutantes conocidos
-ejecutados en copias aisladas) y cinco de CLI mediante procesos reales.
+22 pruebas: nueve funcionales, ocho adversariales (tres mutantes conocidos
+ejecutados en copias aisladas y una regresion de transporte CP1252) y cinco
+de CLI mediante procesos reales.
 El stub falla antes de implementar. Las pruebas CLI son evidencia de la
 interfaz de consola; el tablero se verificara ademas en navegador real.
 

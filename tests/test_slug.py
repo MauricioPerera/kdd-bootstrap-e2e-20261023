@@ -63,6 +63,27 @@ class AdversarialSlugTests(unittest.TestCase):
         self.assertEqual(slugify(text), slugify(text))
         self.assertEqual(text, "Prueba 24")
 
+    def test_utf8_diagnostics_under_legacy_locale(self):
+        script = (
+            "import locale, runpy, sys\n"
+            "locale.getencoding = lambda: 'cp1252'\n"
+            "sys.argv = ['unittest', "
+            "'tests.test_slug.AdversarialSlugTests.test_identity_mutant_rejected', "
+            "'tests.test_slug.AdversarialSlugTests.test_constant_mutant_rejected', "
+            "'tests.test_slug.AdversarialSlugTests.test_no_normalization_mutant_rejected']\n"
+            "runpy.run_module('unittest', run_name='__main__')\n"
+        )
+        result = subprocess.run(
+            [sys.executable, "-X", "utf8=0", "-c", script], cwd=ROOT,
+            capture_output=True, text=True, encoding="utf-8", errors="strict",
+            timeout=30,
+            env={**os.environ, "PYTHONUTF8": "0", "PYTHONIOENCODING": "utf-8"},
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("Ran 3 tests", result.stderr)
+        self.assertIn("OK", result.stderr)
+        self.assertNotIn("UnicodeDecodeError", result.stderr)
+
     def _assert_mutant_rejected(self, source):
         with tempfile.TemporaryDirectory(prefix="kdd-slug-mutant-") as directory:
             root = Path(directory)
@@ -75,6 +96,7 @@ class AdversarialSlugTests(unittest.TestCase):
             result = subprocess.run(
                 [sys.executable, "-m", "unittest", "tests.test_slug.FunctionalSlugTests"],
                 cwd=root, capture_output=True, text=True, timeout=20,
+                encoding="utf-8", errors="strict",
                 env={**os.environ, "PYTHONUTF8": "1"},
             )
             self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
@@ -102,6 +124,7 @@ class SlugCliTests(unittest.TestCase):
         return subprocess.run(
             [sys.executable, "src/slug.py", *args], cwd=ROOT,
             capture_output=True, text=True, timeout=10,
+            encoding="utf-8", errors="strict",
             env={**os.environ, "PYTHONUTF8": "1"},
         )
 
