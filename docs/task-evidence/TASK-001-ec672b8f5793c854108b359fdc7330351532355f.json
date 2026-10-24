@@ -1,0 +1,17 @@
+{
+  "approved_ref": "36efe59798f15579bca495da40f864302c890cb2",
+  "branch_tip": "c9a24bb2c25ea908665e0923804ea18bb36c8e1c",
+  "command": "python -m unittest tests/test_slug.py",
+  "contract_sha256": "94a1a97f34628e8ae3e6b6f7ace4e180796b50e56b6ed395ac9da7281425885d",
+  "exit_code": 0,
+  "oracle_sha256": "0d11f171d0f610a0d96be736b88bedddc107e6e383c1c5ae3200a8913fc4836e",
+  "output_sha256": "87751cc485becbc3bf75f83344ea522f57d090c992e01d917a3857cce598c85c",
+  "passed_tests": 21,
+  "runner": "unittest",
+  "schema_version": 1,
+  "stderr": ".....................\n----------------------------------------------------------------------\nRan 21 tests in 1.152s\n\nOK\n",
+  "stdout": "",
+  "target_sha256": "823653bec944717182fe77dd03d9457ca2a988ec1558b2ca01301af7e2caf60c",
+  "task_id": "TASK-001",
+  "tested_commit": "ec672b8f5793c854108b359fdc7330351532355f"
+}
